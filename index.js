@@ -49,12 +49,12 @@ for (i = 1; i<=N; i++){
 
 riders.sort(compareS);
 
-function getOptVariants(t, x, y){
+function getOptVariants(t, num, x, y){
   let j, q, variants = [];
   for (j = 0; j< riders.length; j++){
     //console.log(j, riders[j]);
     k = getDistance(x, y, riders[j].a, riders[j].b);
-    if (riders[j].served == 0 && riders[j].f >= t + k + riders[j].len){
+    if (riders[j].served == 0 && num != riders[j].num && riders[j].f >= t + k + riders[j].len){
       q = {s: 0, t: 0, num: j};
       if (t + k <= riders[j].s){
         q.s += B;
@@ -102,14 +102,14 @@ for (i = 0; i < F; i++){
         q.t += k + riders[j].len;
         q.s = q.s / q.t;
 
-        m = getOptVariants(t + q.t, riders[q.num].x, riders[q.num].y);
+        m = getOptVariants(t + q.t, q.num, riders[q.num].x, riders[q.num].y);
         q.s += m.s;
         //console.log(q);
         variants.push(q);
       }
-      /*if (variants.length > 200){
+      if (variants.length > 200){
         break;
-      }*/
+      }
     }
     //console.log(i, t, variants);
     if (variants.length){

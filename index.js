@@ -8,12 +8,16 @@ function compareS(a, b) {
   return a.s - b.s;
 }
 
+function compareLen(a, b) {
+  return b.len - a.len;
+}
+
 const fs = require('fs');
 
 let fileNames = ['./a_example.in', './b_should_be_easy.in', './c_no_hurry.in', './d_metropolis.in', './e_high_bonus.in'];
 let resultNames = ['./a_example.out', './b_should_be_easy.out', './c_no_hurry.out', './d_metropolis.out', './e_high_bonus.out'];
 
-let taskCode = 4;
+let taskCode = process.argv[2];
 
 let data = fs.readFileSync(fileNames[taskCode]).toString().split("\n");
 for (let i = data.length - 1; i >= 0; i--) {
@@ -45,6 +49,36 @@ for (i = 1; i<=N; i++){
 
 riders.sort(compareS);
 
+function getOptVariants(t, x, y){
+  let j, q, variants = [];
+  for (j = 0; j< riders.length; j++){
+    //console.log(j, riders[j]);
+    k = getDistance(x, y, riders[j].a, riders[j].b);
+    if (riders[j].served == 0 && riders[j].f >= t + k + riders[j].len){
+      q = {s: 0, t: 0, num: j};
+      if (t + k <= riders[j].s){
+        q.s += B;
+        q.t += riders[j].s - (t + k);
+      }
+      q.s += riders[j].len;
+      q.t += k + riders[j].len;
+      q.s = q.s / q.t;
+      //console.log(q);
+      variants.push(q);
+    }
+    if (variants.length > 200){
+      break;
+    }
+  }
+  variants.sort(compareS);
+  if (variants.length){
+    return variants[variants.length - 1];
+  }
+  else{
+    return {s: 0, t: 0};
+  }
+}
+
 let vehicles = [];
 let variants = [];
 let lastId = -1;
@@ -67,6 +101,9 @@ for (i = 0; i < F; i++){
         q.s += riders[j].len;
         q.t += k + riders[j].len;
         q.s = q.s / q.t;
+
+        m = getOptVariants(t + q.t, riders[q.num].x, riders[q.num].y);
+        q.s += m.s;
         //console.log(q);
         variants.push(q);
       }

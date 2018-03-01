@@ -2,8 +2,8 @@
 
 const fs = require('fs');
 
-let fileNames = [];
-let resultNames = [];
+let fileNames = ['./a_example.in', './b_should_be_easy.in', './c_no_hurry.in', './d_metropolis.in', './e_high_bonus.in'];
+let resultNames = ['./a_example.out', './b_should_be_easy.out', './c_no_hurry.out', './d_metropolis.out', './e_high_bonus.out'];
 
 let taskCode = 0;
 

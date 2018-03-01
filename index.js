@@ -79,12 +79,14 @@ function getOptVariants(t, num, x, y){
   }
 }
 
-let vehicles = [];
+let vehicles  = [];
+let vehiclesT = [];
 let variants = [];
 let lastId = -1;
-
+/*
 for (i = 0; i < F; i++){
   vehicles.push([]);
+  vehiclesT.push(0);
   t = 0; lastId = -1;
   x = 0; y = 0;
   while (t < T){
@@ -102,12 +104,12 @@ for (i = 0; i < F; i++){
         q.t += k + riders[j].len;
         q.s = q.s / q.t;
 
-        m = getOptVariants(t + q.t, q.num, riders[q.num].x, riders[q.num].y);
-        q.s += m.s;
+        //m = getOptVariants(t + q.t, q.num, riders[q.num].x, riders[q.num].y);
+        //q.s += m.s;
         //console.log(q);
         variants.push(q);
       }
-      if (variants.length > 200){
+      if (variants.length > 500){
         break;
       }
     }
@@ -127,7 +129,58 @@ for (i = 0; i < F; i++){
     }
   }
 }
+*/
+for (i = 0; i < F; i++){
+  vehicles.push([]);
+  vehiclesT.push({t: 0, x: 0, y: 0, stop: 0});
+}
+let stop = 0;
+while(stop < F){
+  for (i = 0; i < F; i++){
+    if (vehiclesT[i].stop){
+      continue;
+    }
+    t = vehiclesT[i].t;
+    x = vehiclesT[i].x; y = vehiclesT[i].y;
+    variants = [];
+    for (j = 0; j< riders.length; j++){
+      //console.log(j, riders[j]);
+      k = getDistance(x, y, riders[j].a, riders[j].b);
+      if (riders[j].served == 0 && riders[j].f >= t + k + riders[j].len){
+        q = {s: 0, t: 0, num: j};
+        if (t + k <= riders[j].s){
+          q.s += B;
+          q.t += riders[j].s - (t + k);
+        }
+        q.s += riders[j].len;
+        q.t += k + riders[j].len;
+        q.s = q.s / q.t;
 
+        //m = getOptVariants(t + q.t, q.num, riders[q.num].x, riders[q.num].y);
+        //q.s += m.s;
+        //console.log(q);
+        variants.push(q);
+      }
+      if (variants.length > 1200){
+        break;
+      }
+    }
+    //console.log(i, t, variants);
+    if (variants.length){
+      variants.sort(compareS);
+      q = variants[variants.length - 1];
+
+      vehiclesT[i].t += q.t;
+      vehiclesT[i].x = riders[q.num].x;
+      vehiclesT[i].y = riders[q.num].y;
+      riders[q.num].served = 1;
+      vehicles[i].push(riders[q.num].num);
+    }
+    else{
+      vehiclesT[i].stop = 1; stop++;
+    }
+  }
+}
 //console.log(' - - - ');
 
 for (i = 0; i < F; i++){

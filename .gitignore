@@ -57,3 +57,5 @@ typings/
 # dotenv environment variables file
 .env
 
+hashcode_2018.sublime-project
+hashcode_2018.sublime-workspace

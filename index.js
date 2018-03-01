@@ -30,8 +30,10 @@ let resultText = "";
 let riders = [], riders2 = [];
 
 for (i = 1; i<=N; i++){
-  riders.push({num: i-1,a: data[i][0], b: data[i][1], x: data[i][2], y: data[i][3], s: data[i][4], f: data[i][5]});
-  riders2.push(riders[i-1]);
+  if (data[i][0] + data[i][1] + getDistance(data[i][0], data[i][1], data[i][2], data[i][3]) >= data[i][5]){
+    riders.push({num: i-1,a: data[i][0], b: data[i][1], x: data[i][2], y: data[i][3], s: data[i][4], f: data[i][5]});
+    riders2.push(riders[i-1]);
+  }
 }
 
 

@@ -4,6 +4,10 @@ function getDistance(a, b, x, y){
   return Math.abs(a-x) + Math.abs(b-y);
 }
 
+function compareS(a, b) {
+  return a.s - b.s;
+}
+
 const fs = require('fs');
 
 let fileNames = ['./a_example.in', './b_should_be_easy.in', './c_no_hurry.in', './d_metropolis.in', './e_high_bonus.in'];
@@ -31,10 +35,12 @@ let riders = [], riders2 = [];
 
 for (i = 1; i<=N; i++){
   if (data[i][0] + data[i][1] + getDistance(data[i][0], data[i][1], data[i][2], data[i][3]) >= data[i][5]){
-    riders.push({num: i-1,a: data[i][0], b: data[i][1], x: data[i][2], y: data[i][3], s: data[i][4], f: data[i][5]});
+    riders.push({num: i-1,a: data[i][0], b: data[i][1], x: data[i][2], y: data[i][3], s: data[i][4], f: data[i][5], served: 0});
     riders2.push(riders[i-1]);
   }
 }
+
+riders.sort(compareS);
 
 
 

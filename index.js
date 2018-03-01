@@ -1,5 +1,9 @@
 'use strict';
 
+function getDistance(a, b, x, y){
+  return Math.abs(a-x) + Math.abs(b-y);
+}
+
 const fs = require('fs');
 
 let fileNames = ['./a_example.in', './b_should_be_easy.in', './c_no_hurry.in', './d_metropolis.in', './e_high_bonus.in'];
@@ -13,11 +17,21 @@ for (let i = data.length - 1; i >= 0; i--) {
 }
 
 let i, j, k, m, R = data[0][0], C = data[0][1], F = data[0][2], N = data[0][3], B = data[0][4], T = data[0][5];
+let resultText = "";
+/*
+● R – number of rows of the grid
+● C – number of columns of the grid
+● F – number of vehicles in the fleet
+● N – number of rides
+● B – per-ride bonus for starting the ride on time
+● T – number of steps in the simulation
+*/
 
-let riders = [];
+let riders = [], riders2 = [];
 
 for (i = 1; i<=N; i++){
-  riders.push({a: data[i][0], b: data[i][1], x: data[i][2], y: data[i][3], s: data[i][4], f: data[i][5]});
+  riders.push({num: i-1,a: data[i][0], b: data[i][1], x: data[i][2], y: data[i][3], s: data[i][4], f: data[i][5]});
+  riders2.push(riders[i-1]);
 }
 
 

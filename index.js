@@ -12,6 +12,14 @@ for (let i = data.length - 1; i >= 0; i--) {
   data[i] = data[i].split(' ').map(parseFloat);
 }
 
+let i, j, k, m, R = data[0][0], C = data[0][1], F = data[0][2], N = data[0][3], B = data[0][4], T = data[0][5];
+
+let riders = [];
+
+for (i = 1; i<=N; i++){
+  riders.push({a: data[i][0], b: data[i][1], x: data[i][2], y: data[i][3], s: data[i][4], f: data[i][5]});
+}
+
 
 
 fs.writeFile(resultNames[taskCode], resultText, function(err) {
